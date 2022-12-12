@@ -4,7 +4,7 @@ import twitter
 import pandas as pd
 import csv
 import json
-
+import os
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
@@ -12,10 +12,10 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 app = Flask(__name__)
 
 # Replace with your own Twitter API keys
-api = twitter.Api(consumer_key="2CW39gBbl8RaL6ED9lUGUL3Kt",
-                  consumer_secret="TiaGBqh9qUqL3Dx1bV9abI3jfMeuXfXa7Ko0xKWoioOn0DhOPm",
-                  access_token_key="1520536260300787712-Rtwy55jn2E7HvQCqKqywDlF20QMXfg",
-                  access_token_secret="kK8p1RFbH3WnYo1eFuTCIdIggypIrQrIIj2PXaVTaBW18")
+api = twitter.Api(consumer_key= os.getenv("consumer_key"),
+                  consumer_secret=os.getenv("consumer_secret"),
+                  access_token_key=os.getenv("access_token_key"),
+                  access_token_secret=os.getenv("access_token_secret"))
 
 # # create a csv file, expect data from twitter
 def create_csv(data):
@@ -108,7 +108,7 @@ def get_followers_count(username):
     # print(followers_count)
     return jsonify(len(followers_count))
 
-# Fetch the user's friends
+# Fetch the user's friends or following
 @app.route('/friends/<username>')
 def get_friends(username):
     # Fetch the user's friends
